@@ -1,0 +1,43 @@
+# Question set for the generated dummy-vault. One JSON object per line.
+#
+#   q       the question, phrased the way you would actually ask it
+#   expect  note paths any of which counts as a correct retrieval.
+#           An EMPTY list means the vault cannot answer this, and the
+#           correct behaviour is to decline rather than invent something.
+#   why     free-text, ignored by the runner, for your own notes
+#
+# THIS SET IS A DEMO, NOT A TEMPLATE TO KEEP. The dummy vault repeats the same
+# dozen sentences across every note, so its prose is not distinctive enough to
+# ask real questions about -- only titles, people and ownership are. Copy this
+# file, point it at your own vault, and rewrite it.
+#
+# When you write your own, the rule that matters: phrase the question the way
+# you would ask a colleague, NOT the way the note is written. A question that
+# reuses the note's own words only proves BM25 can match a string, which was
+# never in doubt. The gap between how you ask and how you wrote is the entire
+# thing this system exists to close, and the only thing worth measuring.
+
+{"q": "who owns the Kestrel Cache project", "expect": ["projects/Kestrel Cache.md"], "why": "ownership, stated once, in one note"}
+{"q": "who is responsible for Atlas Migration", "expect": ["projects/Atlas Migration.md"], "why": "'responsible for' vs the note's 'Owner:' -- paraphrase, not string match"}
+{"q": "which project does Ben Okafor look after", "expect": ["projects/Kestrel Cache.md", "people/Ben Okafor.md"], "why": "reverse lookup through the link graph"}
+{"q": "what is Liam O'Donnell working on", "expect": ["projects/Granite Billing.md", "projects/Juniper Auth.md", "people/Liam O'Donnell.md"], "why": "apostrophe in a proper noun -- an FTS tokeniser trap"}
+{"q": "Farid Haddad projects", "expect": ["projects/Beacon Rollout.md", "projects/Lantern Reports.md", "people/Farid Haddad.md"], "why": "bare keywords, no sentence"}
+
+{"q": "how should I decide where to split a note into chunks", "expect": ["reference/Chunking strategies.md"], "why": "pure paraphrase -- shares almost no vocabulary with the note title"}
+{"q": "notes on tuning BM25", "expect": ["reference/BM25 tuning.md"], "why": "title match, should be trivial for keyword search"}
+{"q": "what happens to retrieval when the embedding model changes", "expect": ["reference/Embedding drift.md"], "why": "concept named in the title only obliquely"}
+{"q": "how do we measure whether retrieval is working", "expect": ["reference/Retrieval evaluation.md"], "why": "the question this file is an answer to"}
+{"q": "tradeoffs between different vector index types", "expect": ["reference/Vector index tradeoffs.md"], "why": "near-title"}
+{"q": "how long should a query take", "expect": ["reference/Latency budgets.md"], "why": "paraphrase of 'budgets'"}
+{"q": "reranking", "expect": ["reference/Reranking models.md"], "why": "single word, tests whether one token is enough"}
+
+{"q": "que quedo pendiente con las pruebas de integracion", "expect": ["projects/Atlas Migration.md"], "why": "Spanish question against Spanish content -- the multilingual claim"}
+{"q": "what is still outstanding on integration testing", "expect": ["projects/Atlas Migration.md"], "why": "English question, Spanish content -- the CROSS-lingual claim, which is the harder one"}
+
+{"q": "what did the Harbour Sync meeting cover", "expect": ["projects/Harbour Sync.md"], "why": "many meeting notes share this title -- tests the per-note cap and breadcrumb disambiguation"}
+{"q": "access control", "expect": ["reference/Access control.md"], "why": "two common words that appear all over the vault"}
+{"q": "how do we restore from backup", "expect": ["reference/Backup and restore.md"], "why": "paraphrase plus word order change"}
+
+{"q": "what is my bank card PIN", "expect": [], "why": "unanswerable -- must decline, not improvise"}
+{"q": "what did we decide at the board meeting in Reykjavik", "expect": [], "why": "unanswerable but plausible-sounding -- the dangerous kind"}
+{"q": "what is the capital of Australia", "expect": [], "why": "the model knows this, but the vault does not. It must still decline."}
