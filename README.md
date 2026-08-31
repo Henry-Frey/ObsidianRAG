@@ -114,10 +114,41 @@ server on a loopback port for the chat model, so streaming, SSE parsing and
 a real llama-server returns the shapes expected — that is what `orag doctor`
 is for — and it does not measure retrieval quality.
 
+## Evaluation
+
+```powershell
+orag eval                          # recall@k and MRR, per retriever
+orag eval -v                       # which questions missed, and what ranked instead
+orag eval --answer                 # also grade the generated answers
+orag eval --save eval/runs/a.json
+orag eval --weight-vector 2 --baseline eval/runs/a.json    # did that help?
+```
+
+The question set is JSONL, one case per line:
+
+```json
+{"q": "who owns the Kestrel Cache project", "expect": ["projects/Kestrel Cache.md"]}
+{"q": "what is my bank card PIN", "expect": []}
+```
+
+An empty `expect` means the vault cannot answer it and the correct behaviour is
+to decline. Those cases matter more than they look: a notes assistant that
+invents a plausible answer where you never wrote the note is worse than
+useless, because you will believe it.
+
+`eval/dummy-vault.jsonl` is a demo, not a template to keep. Copy it and write
+your own, and when you do, **phrase each question the way you would ask a
+colleague, not the way the note is written**. A question that reuses the note's
+own words only proves BM25 can match a string, which was never in doubt. The
+gap between how you ask and how you wrote is the whole reason this exists.
+
+The three-retriever table is the number that justifies -- or refutes -- half
+this codebase. If the hybrid does not beat both single retrievers on your
+questions, the fusion is not earning its complexity, and `--weight-bm25` /
+`--weight-vector` are the first things to try.
+
 ## Known gaps
 
-- **No retrieval evaluation.** Nothing here measures whether the answers are
-  good. A question/expected-source set is the obvious next thing to build.
 - `--doctor` cannot detect a wrong `--pooling`: you get correctly shaped
   vectors that are quietly worse, with no error.
 - Anchor text from `[[links]]` is not folded into the BM25 row yet.

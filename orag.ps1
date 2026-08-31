@@ -38,6 +38,7 @@ function orag {
         "links"   { & python (Join-Path $root "index.py")  --links  @Rest }
         "dates"   { & python (Join-Path $root "index.py")  --dates  @Rest }
         "show"    { & python (Join-Path $root "index.py")  --show   @Rest }
+        "eval"    { & python (Join-Path $root "evaluate.py") @Rest }
 
         # Each server blocks its terminal, so these open their own window.
         "serve" {
@@ -72,6 +73,7 @@ orag <command> [args]
   doctor                  check models and both llama-servers
   stats | links | dates   index reports
   show    "note.md"       print how one note was chunked
+  eval                    measure retrieval against a question set
   serve   embed|chat|both start a llama-server in its own window
   env                     show which paths and models are in effect
 
